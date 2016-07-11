@@ -1,36 +1,16 @@
-# datomic-basics
+# Learning Datomic
 
-FIXME: description
+This repos contains samples of code taken from various introductions to datomic
+available on the web. The code will vary from the vanilla tutorials as I try new
+things to understand datomic.
 
 ## Installation
 
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar datomic-basics-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+Git glone and lein repl.
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 chpill
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
