@@ -1,7 +1,7 @@
-(ns datomic-basics.tdd-test
+(ns learning-datomic.tdd-test
   (:require [clojure.test :refer :all]
-            [datomic-basics.tdd :refer :all]
-            [datomic.api :as datomic]))
+            [datomic.api :as datomic]
+            [learning-datomic.tdd :refer :all]))
 
 ;; This code is taken from an example of TDD with datomic by mtnygard
 ;; https://www.youtube.com/watch?v=JaZ1Tm6ixCY

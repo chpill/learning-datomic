@@ -1,4 +1,4 @@
-(ns datomic-basics.tdd
+(ns learning-datomic.tdd
   (:require [clojure.spec :as spec]
             [datomic.api :as datomic]))
 

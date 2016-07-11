@@ -1,4 +1,4 @@
-(ns datomic-basics.core
+(ns learning-datomic.hands-on
   (:gen-class)
   (:require [datomic.api :as datomic]))
 
