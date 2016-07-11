@@ -64,3 +64,14 @@
   (datomic/transact conn
                     [[:db/add #db/id[:db.part/user]
                       :db/ident tag-name]]))
+
+(defn add-tag-to-todo
+  [conn todo-id tag]
+  (datomic/transact conn
+                    [[:db/add todo-id :todo/tag tag]]))
+
+(defn remove-tag-from-todo
+  [conn todo-id tag]
+  (datomic/transact conn
+                    [[:db/retract todo-id :todo/tag tag]]))
+

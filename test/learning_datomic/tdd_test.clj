@@ -56,4 +56,30 @@
     (is (thrown? AssertionError
                  @(add-tag *conn* :not-the-right-namespace/test)))))
 
+(deftest todo-and-tags-test
+  @(datomic/transact *conn* schema)
+  @(datomic/transact *conn* initial-tags)
+  (let [todo-id (-> @(add-todo *conn* "I am a test todo item")
+                    :tempids first second)]
+    (testing "associate a tag to a todo item"
+      @(add-tag-to-todo *conn* todo-id :todo.tags/feat)
+      (is (= #{:todo.tags/feat}
+             (-> (datomic/entity (datomic/db *conn*) todo-id)
+                 :todo/tag))))
+    ;; This is actually a feature of datomic, no assertions necessary on our
+    ;; part. I let this test to illustrate the execption (there has to be a
+    ;; better way to catch that exception though...)
+    (testing "refuses to associate a broken tag"
+      (is (thrown? java.util.concurrent.ExecutionException
+                   @(add-tag-to-todo *conn* todo-id :todo.tags/i-do-not-exist))))
+    (testing "dissociate a tag from a todo"
+      @(remove-tag-from-todo *conn* todo-id :todo.tags/feat)
+      ;; When a cardinality many attributes reference no value, its value is
+      ;; nil, not an emtpy set.
+      (is (nil? (-> (datomic/entity (datomic/db *conn*) todo-id)
+                    :todo/tag))))
+    ;; This does not throw an exception... We should explore data retraction next!
+    (testing "cannot dissociate a tag that is not associated"
+      @(remove-tag-from-todo *conn* todo-id :todo.tags/feat))))
+
 (run-tests)
