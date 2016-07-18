@@ -18,7 +18,7 @@
               :db/doc                "True is the task has been completed."
               :db.install/_attribute :db.part/db}
              {:db/id                 #db/id[db.part/db]
-              :db/ident              :todo/tag
+              :db/ident              :todo/tags
               :db/valueType          :db.type/ref
               :db/cardinality        :db.cardinality/many
               :db/doc                "tag to help categorize todos"
@@ -68,10 +68,35 @@
 (defn add-tag-to-todo
   [conn todo-id tag]
   (datomic/transact conn
-                    [[:db/add todo-id :todo/tag tag]]))
+                    [[:db/add todo-id :todo/tags tag]]))
 
 (defn remove-tag-from-todo
   [conn todo-id tag]
   (datomic/transact conn
-                    [[:db/retract todo-id :todo/tag tag]]))
+                    [[:db/retract todo-id :todo/tags tag]]))
+
+
+(def history-of-a-todo-query
+  '[:find ?attr ?v ?action ?tx
+    :in $ ?e
+    :where
+    [?e ?a ?v ?tx ?added]
+    ;; pretty printing
+    [?a :db/ident ?attr]
+    [({true "asserted" false "retracted"} ?added) ?action]])
+
+;; (def history-of-a-todos-tags-query
+;; '[:find ?tx ?attr-name ?added
+;;   :in $ ?e
+;;   :where
+;;   [?e :todo/tags ?attr]
+;;   [?attr _ _ ?tx ?added]
+;;   [?attr :db/ident ?attr-name]])
+
+(def history-of-a-todos-tags-query
+  '[:find ?tx ?e ?attr-name ?added
+    :in $ ?e
+    :where
+    [?e :todo/tags ?attr ?tx ?added]
+    [?attr :db/ident ?attr-name]])
 
